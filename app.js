@@ -209,8 +209,8 @@ function vDash(){
   h+='<div class="grid stats">'
     +'<a class="stat" href="#gardens" data-go="gardens"><b class="num">'+total+'</b><span>gardens</span></a>'
     +'<a class="stat" href="#plants" data-go="plants"><b class="num">'+m.plants.length+'</b><span>plant records · '+m.species+' species and hybrids</span></a>'
-    +'<a class="stat" href="#seasons.'+CUR+'" data-go="seasons.'+CUR+'"><b class="num">'+cov[CUR-1]+'</b><span>gardens with something to see in '+MONTHS[CUR-1]+'</span></a>'
-    +'<a class="stat w" href="#gardens" data-go="gardens" data-set="nonotes"><b class="num">'+(noNotes==null?'–':noNotes)+'</b><span>'+(S.notesState==='off'?'gardens with no notes (sign in to Claude to see notes)':'gardens with no notes yet')+'</span></a></div>';
+    +'<a class="stat" href="#seasons.'+CUR+'" data-go="seasons.'+CUR+'"><b class="num">'+blo[CUR-1]+'</b><span>gardens with something to see in '+MONTHS[CUR-1]+'</span></a>'
+    +'</div>';
   h+='<div class="grid two"><section class="card"><div class="cardhead"><h2>Seasonal interest across the park</h2><span class="hint">of '+total+' gardens · click a month</span></div>'
     +'<div class="bars">'+cov.map(function(v,i){ var f=blo[i], o=v-f;
       return '<a class="bar'+(i+1===CUR?' cur':'')+'" href="#seasons.'+(i+1)+'" data-go="seasons.'+(i+1)+'" title="'+esc(MONTHS[i]+': '+f+' in bloom, '+o+' with foliage, berries or stems only, '+non[i]+' with nothing to see')+'"><span class="num">'+f+'</span><span class="col"><i class="seg s" style="height:'+(o/max*100).toFixed(1)+'%"></i><i class="seg f" style="height:'+(f/max*100).toFixed(1)+'%"></i></span></a>'; }).join('')+'</div>'
@@ -335,11 +335,11 @@ function vSeasons(){
     +'<div style="display:flex;flex-direction:column;gap:4px;margin-top:8px">'+G.map(function(g){ var lab=gardenLabels(g);
       return '<div class="sgrow">'+goA('g.'+g.id,esc(g.name))+g.cells.map(function(k,i){return '<span class="cell '+k+(i+1===mo?' sel':'')+'" title="'+esc(MON[i]+': '+lab[i])+'"></span>';}).join('')+'</div>'; }).join('')+'</div>'
     +'</div></div>'+legend(true)+'</section>';
-  var withI=G.filter(function(g){var k=g.cells[mo-1]; return k==='f'||k==='s';}).length;
+  var withI=G.filter(function(g){return g.cells[mo-1]==='f';}).length;
   var D=G.slice().sort(function(a,b){ var o={f:0,s:1,n:2,u:3}; return o[a.cells[mo-1]]-o[b.cells[mo-1]]||a.name.localeCompare(b.name); });
   h+='<section class="card"><h2 style="font-size:26px">'+MONTHS[mo-1]+'</h2><p class="hint" style="margin:4px 0 14px;font-size:14px">'+withI+' of '+total+' gardens have something to see</p><div class="rows">'
-    +D.map(function(g){ var b=g.by[mo-1], k=g.cells[mo-1], what=k==='f'?listNames(b.f.map(function(p){return p.common;}),3):k==='s'?listNames(b.s.map(function(p){return p.common+' ('+p.int.why[mo-1][0]+')';}),2):k==='u'?'No season data':'Nothing to see';
-      return goA('g.'+g.id,'<b>'+esc(g.name)+'</b><span class="r'+(k==='n'?' warn':'')+'">'+esc(what)+'</span>','row'); }).join('')+'</div></section></div>';
+    +D.map(function(g){ var b=g.by[mo-1], k=g.cells[mo-1], what=k==='f'?listNames(b.f.map(function(p){return p.common;}),3):k==='s'?'Not in bloom · foliage, berries or stems: '+listNames(b.s.map(function(p){return p.common;}),2):k==='u'?'No season data':'Nothing to see';
+      return goA('g.'+g.id,(k==='f'?'<b>'+esc(g.name)+'</b>':'<span class="dim">'+esc(g.name)+'</span>')+'<span class="r'+(k==='n'?' warn':'')+'">'+esc(what)+'</span>','row'); }).join('')+'</div></section></div>';
   return h;
 }
 
