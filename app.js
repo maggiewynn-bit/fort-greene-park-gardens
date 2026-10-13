@@ -219,12 +219,6 @@ function vDash(){
   h+='<section class="card"><div class="cardhead"><h2>In bloom · '+MONTHS[CUR-1]+'</h2><span class="hint">'+plural(bloomG.length,'garden')+'</span></div><div class="rows">'
     +(bloomG.length?bloomG.slice(0,6).map(function(x){ return goA('g.'+x.g.id,'<b>'+esc(x.g.name)+'</b><span class="r">'+esc(listNames(x.f.map(function(p){return p.common;}),2))+'</span>','row'); }).join(''):'<div class="empty">Nothing recorded as in bloom this month.</div>')
     +'</div>'+(bloomG.length>6?'<p style="margin:10px 0 0;font-size:14px">'+goA('seasons.'+CUR,'See all '+bloomG.length+' gardens')+'</p>':'')+'</section></div>';
-  // high failure rate
-  h+='<div class="grid two"><section class="card"><div class="cardhead"><h2>High failure rate</h2><span class="hint">from the sheet’s “High failure rate plants” tab</span></div>';
-  if(m.failures.length){ h+='<div class="scroll"><table class="t tight"><thead><tr><th>As recorded</th><th>On the plant list</th><th>Recorded reason</th></tr></thead><tbody>';
-    m.failures.forEach(function(f){ h+='<tr><td><span class="nm">'+esc(f.text)+'</span></td><td>'+(f.plants.length?f.plants.map(function(p){ return goA('p.'+p.id,esc(p.common),'ul')+' <span class="hint num" title="'+esc(p.gardens.map(function(g){return g.name;}).join(' · ')||'No garden recorded')+'">('+p.gardens.length+')</span>'; }).join('<br>'):'<span class="dash">not on the plant list</span>')+'</td><td>'+esc(f.why)+'</td></tr>'; });
-    h+='</tbody></table></div><p class="hint" style="margin:10px 0 0">The number after each plant is how many gardens it is recorded in.</p>'; } else h+='<div class="empty">No high-failure plants are listed in the sheet.</div>';
-  h+='</section>';
   var P=m.plants, cnt=function(fn){return P.filter(fn).length;};
   var gaps=[['Verified in the field',cnt(function(p){return p.verified;})+' of '+P.length,'plants','unverified',cnt(function(p){return !p.verified;})>0],
     ['Flagged for checking in the sheet notes',cnt(function(p){return p.check;}),'plants','check',true],
@@ -232,7 +226,7 @@ function vDash(){
     ['Plants with no season data yet',cnt(function(p){return !p.int;}),'plants','nodata',true],
     ['Gardens with a whole season of nothing to see',G.filter(function(g){return g.gaps.length;}).length,'gardens','gap',true],
     ['Gardens on the map with no plants recorded',G.filter(function(g){return !g.plants.length;}).length,'gardens','noplants',true]];
-  h+='<div class="stack"><section class="card"><div class="cardhead"><h2>Gaps in the record</h2><span class="hint">what the next person would have to guess</span></div><div class="rows">'
+  h+='<div class="grid two"><section class="card"><div class="cardhead"><h2>Gaps in the record</h2><span class="hint">what the next person would have to guess</span></div><div class="rows">'
     +gaps.map(function(r){ return '<a class="row" href="#'+r[2]+'" data-go="'+r[2]+'" data-set="'+r[3]+'"><b>'+esc(r[0])+'</b><span class="r num'+(r[4]&&r[1]!==0?' warn':'')+'">'+esc(r[1])+'</span></a>'; }).join('')+'</div></section>';
   var nNyc=cnt(function(p){return p.nyc;}), nNa=cnt(function(p){return p.na;}), tc={}; P.forEach(function(p){ var t=p.type||'Not recorded'; tc[t]=(tc[t]||0)+1; });
   var toneSets=[['var(--bloom)','var(--foliage)','var(--nodata)'],['var(--bloom)','var(--foliage)','var(--clay-bar)','var(--nodata)','var(--border-strong)','var(--ink)']];
@@ -240,7 +234,7 @@ function vDash(){
     {label:'By type',parts:Object.keys(tc).sort(function(a,b){return tc[b]-tc[a];}).slice(0,6).map(function(t){return [t,tc[t],t==='Not recorded'?'':'type:'+t];})}];
   h+='<section class="card"><div class="cardhead"><h2>What is planted</h2><span class="hint">'+P.length+' plant records</span></div>'+comp.map(function(c,ci){ var tones=toneSets[ci];
       return '<div class="comp"><div class="hint">'+c.label+'</div><div class="stackbar">'+c.parts.map(function(x,i){return x[1]?'<span style="flex:'+x[1]+';background:'+tones[i]+'" title="'+esc(x[0]+': '+x[1])+'"></span>':'';}).join('')+'</div><div class="legend" style="margin-top:8px">'
-        +c.parts.map(function(x,i){ var inner='<i style="background:'+tones[i]+';border-radius:50%;width:9px;height:9px"></i>'+esc(x[0])+' · <b class="num" style="font-weight:500">'+x[1]+'</b>'; return x[2]?'<a href="#plants" data-go="plants" data-set="'+esc(x[2])+'" style="display:flex;gap:6px;align-items:center;color:var(--ink)">'+inner+'</a>':'<span>'+inner+'</span>'; }).join('')+'</div></div>'; }).join('')+'</section></div></div>';
+        +c.parts.map(function(x,i){ var inner='<i style="background:'+tones[i]+';border-radius:50%;width:9px;height:9px"></i>'+esc(x[0])+' · <b class="num" style="font-weight:500">'+x[1]+'</b>'; return x[2]?'<a href="#plants" data-go="plants" data-set="'+esc(x[2])+'" style="display:flex;gap:6px;align-items:center;color:var(--ink)">'+inner+'</a>':'<span>'+inner+'</span>'; }).join('')+'</div></div>'; }).join('')+'</section></div>';
   return h;
 }
 
