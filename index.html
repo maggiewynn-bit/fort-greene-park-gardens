@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fort Greene Park Gardens</title>
+<meta name="description" content="A record of Fort Greene Park's gardens and plants: what grows where, what there is to see each month, and what the next gardener should know.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="brand" href="#dashboard" data-go="dashboard"><small>Fort Greene Park</small>Park Gardens</a>
+<nav class="tabs" aria-label="Sections">
+<a class="tab" data-tab="dash" href="#dashboard" data-go="dashboard">Dashboard</a>
+<a class="tab" data-tab="gardens" href="#gardens" data-go="gardens">Gardens</a>
+<a class="tab" data-tab="plants" href="#plants" data-go="plants">Plants</a>
+<a class="tab" data-tab="seasons" href="#seasons" data-go="seasons">Seasons</a>
+<a class="tab" data-tab="map" href="#map" data-go="map">Map</a>
+</nav>
+<div class="spacer"></div>
+<div id="sync" class="sync snap" aria-live="polite"></div>
+<div class="search"><input id="q" type="search" placeholder="Find a plant or garden" aria-label="Find a plant or garden" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="dd"><div id="dd" class="dd" role="listbox" hidden></div></div>
+</div></header>
+<main class="wrap" id="app"></main>
+<script src="config.js"></script>
+<script src="data/sheet-snapshot.js"></script>
+<script src="data/plant-profiles.js"></script>
+<script src="data/plant-aliases.js"></script>
+<script src="data/nyc-native.js"></script>
+<script src="data/park-map.js"></script>
+<script src="app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</body>
+</html>
